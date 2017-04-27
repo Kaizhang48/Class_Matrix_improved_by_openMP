@@ -1,5 +1,4 @@
-// test_cmatrix.cpp : Defines the entry point for the console application.
-#include "stdafx.h"
+//written by KAIZHANG
 #include <stdio.h>
 #include <iostream>
 #include <tchar.h>
@@ -131,79 +130,6 @@ public:
 			moveassignfrom.col = 0;
 		}
 	}
-	/*matrix inv()
-	{
-		int *is = new int[row];
-		int *js = new int[row];
-		int i, j, k;
-		double d, p;
-		for (k = 0; k < row; k++)
-		{
-			d = 0.0;
-			for (i = k; i <= row - 1; i++)
-				for (j = k; j <= row - 1; j++)
-				{
-					p = fabs(data[i][j]);
-					if (p>d) { d = p; is[k] = i; js[k] = j; }
-				}
-			if (0.0 == d)
-			{
-				free(is); free(js); 
-				throw out_of_range("can not be inversed");
-			}
-			if (is[k] != k)
-				for (j = 0; j <= row - 1; j++)
-				{
-					p = data[k][j];
-					data[k][j] = data[is[k]][j];
-					data[is[k]][j] = p;
-				}
-			if (js[k] != k)
-				for (i = 0; i <= row - 1; i++)
-				{
-					p = data[i][k];
-					data[i][k] = data[i][js[k]];
-					data[i][js[k]] = p;
-				}
-			data[k][k] = 1.0 / data[k][k];
-			for (j = 0; j <= row - 1; j++)
-				if (j != k)
-				{
-					data[k][j] *= data[k][k];
-				}
-			for (i = 0; i <= row - 1; i++)
-				if (i != k)
-					for (j = 0; j <= row - 1; j++)
-						if (j != k)
-						{
-							data[i][j] -= data[i][k] * data[k][j];
-						}
-			for (i = 0; i <= row - 1; i++)
-				if (i != k)
-				{
-					data[i][k] = -data[i][k] * data[k][k];
-				}
-		}
-		for (k = row - 1; k >= 0; k--)
-		{
-			if (js[k] != k)
-				for (j = 0; j <= row - 1; j++)
-				{
-					p = data[k][j];
-					data[k][j] = data[js[k]][j];
-					data[js[k]][j] = p;
-				}
-			if (is[k] != k)
-				for (i = 0; i <= row - 1; i++)
-				{
-					p = data[i][k];
-					data[i][k] = data[i][is[k]];
-					data[i][is[k]] = p;
-				}
-		}
-		free(is); free(js);
-		return *this;
-	}*/
 	vector<int> size() const {
 		return vector<int>{row, col};
 	}
@@ -334,79 +260,6 @@ ostream& operator <<(std::ostream &os, const matrix &m)
 	os << "\n\n";
 	return os;
 }
-/*int matrixInversion(double **a, int n)
-{
-	int *is = new int[n];
-	int *js = new int[n];
-	int i, j, k;
-	double d, p;
-	for (k = 0; k < n; k++)
-	{
-		d = 0.0;
-		for (i = k; i <= n - 1; i++)
-			for (j = k; j <= n - 1; j++)
-			{
-				p = fabs(a[i][j]);
-				if (p>d) { d = p; is[k] = i; js[k] = j; }
-			}
-		if (0.0 == d)
-		{
-			free(is); free(js); printf("err**not inv\n");
-			return(0);
-		}
-		if (is[k] != k)
-			for (j = 0; j <= n - 1; j++)
-			{
-				p = a[k][j];
-				a[k][j] = a[is[k]][j];
-				a[is[k]][j] = p;
-			}
-		if (js[k] != k)
-			for (i = 0; i <= n - 1; i++)
-			{
-				p = a[i][k];
-				a[i][k] = a[i][js[k]];
-				a[i][js[k]] = p;
-			}
-		a[k][k] = 1.0 / a[k][k];
-		for (j = 0; j <= n - 1; j++)
-			if (j != k)
-			{
-				a[k][j] *= a[k][k];
-			}
-		for (i = 0; i <= n - 1; i++)
-			if (i != k)
-				for (j = 0; j <= n - 1; j++)
-					if (j != k)
-					{
-						a[i][j] -= a[i][k] * a[k][j];
-					}
-		for (i = 0; i <= n - 1; i++)
-			if (i != k)
-			{
-				a[i][k] = -a[i][k] * a[k][k];
-			}
-	}
-	for (k = n - 1; k >= 0; k--)
-	{
-		if (js[k] != k)
-			for (j = 0; j <= n - 1; j++)
-			{
-				p = a[k][j];
-				a[k][j] = a[js[k]][j];
-				a[js[k]][j] = p;
-			}
-		if (is[k] != k)
-			for (i = 0; i <= n - 1; i++)
-			{
-				p = a[i][k];
-				a[i][k] = a[i][is[k]];
-				a[i][is[k]] = p;
-			}
-	}
-	free(is); free(js);
-	return(1);
-}*/
 matrix inv(matrix b)
 {
 	double**&a = b.data;
