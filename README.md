@@ -1,6 +1,6 @@
 # Class_Matrix_improved_by_openMP
 class Matrix imporved by openMP
-Implemented multipy threads to improve the algebra calculation significantly.
+Implemented multipy threads to  significantly improve the algebra calculation.
 
 to use it, just #include<matrix.h>
 
