@@ -48,15 +48,22 @@ private:
 };
 
 void matrix::mfree() {
+	
   if (data != nullptr) {
+#pragma omp parallel
+{
+#pragma omp for
     for (int i = 0; i < row; ++i)
+		{
       delete[] data[i];
+		}
+}
     delete[] data;
   }
   row = 0;
   col = 0;
+	
 }
-
 double*& matrix::operator[](int t) {
   double* &r = data[t];
   return r;
