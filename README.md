@@ -1,4 +1,4 @@
-# class_Matrix_improved_by_openMP
+# Class_Matrix_improved_by_openMP
 class Matrix imporved by openMP
 Implemented multipy threads to improve the algebra calculation significantly.
 
@@ -43,22 +43,24 @@ int main(){
 	cout<<aa << endl;
 	
 	matrix temp(aa[0],5);
+		
+	cout<<"the first row is: " <<endl;
 	
-	matrix tempi(aa[0],5);
-	
-	cout<<temp<<endl;
-	
-	cout<<tempi<<endl;
+	cout<<temp<,endl;
 	
 	matrix r=cov(aa);
 	
+	cout<<"covariance matrix of aa is: "<<endl;
+	
 	cout<<r<<endl;
 	
-	cout<<r.getdata(1,1)<<endl;
+	cout<<"aa(1,1) is: "<<r.getdata(1,1)<<endl;
 	
 	matrix bb=aa;
 	
 	bb.T();
+	
+	cout<<"aa*aa' is: "<<endl;
 	
 	cout<<aa*bb<<endl;
 	
@@ -80,13 +82,16 @@ aa is:
 
 
 
+
+the first row is:
+
+
  |     0.2368     0.2471     0.2568     1.2671     1.0000 |
 
 
 
- |     0.2368     0.2471     0.2568     1.2671     1.0000 |
 
-
+covariance matrix of aa is: 
 
 
 |     0.2448    -0.0005    -0.0024    -0.0038 |
@@ -98,8 +103,12 @@ aa is:
 |    -0.0038     0.0021    -0.0003     0.2480 |
 
 
+aa(1,1) is: 
 
 0.255685
+
+aa*aa' is: 
+
 
 |     2.7886     1.5200     1.6084     1.6980 |
 
