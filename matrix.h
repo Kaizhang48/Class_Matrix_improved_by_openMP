@@ -1,11 +1,9 @@
 //written by KAIZHANG
 #ifndef MATRIX
 #define MATRIX
-#include <stdio.h>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>
-#include <string>
 #include<vector>
 #include "omp.h"
 using std::vector;
@@ -48,7 +46,6 @@ private:
 };
 
 void matrix::mfree() {
-	
   if (data != nullptr) {
 #pragma omp parallel
 {
@@ -62,7 +59,6 @@ void matrix::mfree() {
   }
   row = 0;
   col = 0;
-	
 }
 double*& matrix::operator[](int t) {
   double* &r = data[t];
