@@ -45,32 +45,6 @@ private:
 	void mfree();
 };
 
-void matrix::mfree() {
-  if (data != nullptr) {
-#pragma omp parallel
-{
-#pragma omp for
-    for (int i = 0; i < row; ++i)
-		{
-      delete[] data[i];
-		}
-}
-    delete[] data;
-  }
-  row = 0;
-  col = 0;
-}
-double*& matrix::operator[](int t) {
-  double* &r = data[t];
-  return r;
-}
-matrix::matrix(double* const a,const int&n):row(1),col(n) {
-  data = new double*[1];
-  data[0] = new double[n];
-  for(int i=0;i<col;++i){
-    data[0][i]=a[i];
-  }
-}
 matrix::matrix(const int&a, const int& b,const double& c) :row(a), col(b) {
   data = new double*[row];
 #pragma omp parallel
@@ -247,121 +221,6 @@ matrix::~matrix()
    delete[] tempdata;
    return *this;
  }
- matrix inv(matrix b)
- {
- 	double**&a = b.data;
- 	int& n = b.row;
- 	int *is = new int[n];
- 	int *js = new int[n];
- 	int i, j, k;
- 	double d, p;
- 	for (k = 0; k < n; k++)
- 	{
- 		d = 0.0;
- 		for (i = k; i <= n - 1; i++)
- 			for (j = k; j <= n - 1; j++)
- 			{
- 				p = fabs(a[i][j]);
- 				if (p>d) { d = p; is[k] = i; js[k] = j; }
- 			}
- 		if (0.0 == d)
- 		{
- 			free(is); free(js);
- 			throw out_of_range("can not be inversed !");
- 		}
- 		if (is[k] != k)
- 			for (j = 0; j <= n - 1; j++)
- 			{
- 				p = a[k][j];
- 				a[k][j] = a[is[k]][j];
- 				a[is[k]][j] = p;
- 			}
- 		if (js[k] != k)
- 			for (i = 0; i <= n - 1; i++)
- 			{
- 				p = a[i][k];
- 				a[i][k] = a[i][js[k]];
- 				a[i][js[k]] = p;
- 			}
- 		a[k][k] = 1.0 / a[k][k];
- 		for (j = 0; j <= n - 1; j++)
- 			if (j != k)
- 			{
- 				a[k][j] *= a[k][k];
- 			}
- 		for (i = 0; i <= n - 1; i++)
- 			if (i != k)
- 				for (j = 0; j <= n - 1; j++)
- 					if (j != k)
- 					{
- 						a[i][j] -= a[i][k] * a[k][j];
- 					}
- 		for (i = 0; i <= n - 1; i++)
- 			if (i != k)
- 			{
- 				a[i][k] = -a[i][k] * a[k][k];
- 			}
- 	}
- #pragma omp parallel
- {
- #pragma omp for
-   	for (k = n - 1; k >= 0; k--)
-   	{
-   		if (js[k] != k)
-   			for (j = 0; j <= n - 1; j++)
-   			{
- #pragma omp critical
-   				p = a[k][j];
-   				a[k][j] = a[js[k]][j];
-   				a[js[k]][j] = p;
-   			}
-   		if (is[k] != k)
-   			for (i = 0; i <= n - 1; i++)
-   			{
- #pragma omp critical
-   				p = a[i][k];
-   				a[i][k] = a[i][is[k]];
-   				a[i][is[k]] = p;
-   			}
-   	}
- }
- 	free(is); free(js);
- 	return std::move(b);
- }
-
- matrix operator*( const matrix& A,const matrix& B) {
- 	auto szA = A.size();
- 	auto szB = B.size();
- 	if (szA[0] != szB[1] || szA[1] != szB[0]) {
- 		throw out_of_range("size of two matrixs does not match!");
- 	}
- 	matrix result(szA[0], szB[1]);
- 	if(szA[0]==1){
- 		for(int i=0;i<szA[1];++i){
- 	  	result.data[0][0]+=(A.getdata(0,i)*B.getdata(i,0));
- 		}
- 	}
- 	else{
- #pragma omp parallel
- {
- #pragma omp for
-
- 		for (int i = 0; i < szA[0]; ++i)
- 		{
- 			//printf("I am Thread %d\n", omp_get_thread_num());
- 			for (int j = 0; j < szB[1]; ++j)
- 			{
- 				for (int k = 0; k < szA[1]; k++)
- 				{
- #pragma omp critical
- 					result.data[i][j] += (A.getdata(i,k)* B.getdata(k,j));
- 				}
- 			}
- 		}
- }
- }
- 	return std::move(result);
- }
 
  matrix operator*( matrix& A, const double &B) {
  	auto sz = A.size();
@@ -441,20 +300,6 @@ matrix::~matrix()
  	return os;
  }
 
- matrix mean(matrix& a) {
- 	matrix result(a.row, 1);
- #pragma omp parallel
- 	{
- #pragma omp for
- 		for (int i = 0; i < a.row; ++i) {
- 			for (int j = 0; j < a.col; ++j) {
- 				result[i][0] += a.data[i][j];
- 			}
- 			result[i][0]/=a.col;
- 		}
- 	}
- 	return std::move(result);
- }
  void removemean(matrix& a){
  	matrix b=mean(a);
  #pragma omp parallel
