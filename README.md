@@ -46,7 +46,7 @@ int main(){
 		
 	cout<<"the first row is: " <<endl;
 	
-	cout<<temp<,endl;
+	cout<<temp<<endl;
 	
 	matrix r=cov(aa);
 	
@@ -103,9 +103,8 @@ covariance matrix of aa is:
 |    -0.0038     0.0021    -0.0003     0.2480 |
 
 
-aa(1,1) is: 
+aa(1,1) is:  0.255685
 
-0.255685
 
 aa*aa' is: 
 
